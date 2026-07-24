@@ -10,19 +10,45 @@
 - **현재 날씨** — [Open-Meteo](https://open-meteo.com/) API로 각 여행지의 실시간 기온·날씨를 조회합니다. (무료, API 키 불필요)
 - **예상 항공권 가격** — 출발지↔여행지 거리(하버사인)를 기반으로 왕복 항공권 가격을 추정합니다.
 
-## 빠른 시작
+## 두 가지 실행 방식
+
+이 저장소는 **동일한 기능**을 두 가지 형태로 제공합니다.
+
+| | Node 서버 버전 | 정적(GitHub Pages) 버전 |
+|---|---|---|
+| 위치 | `server.js` + `public/` | `docs/` |
+| 실행 | `node server.js` | 브라우저에서 `docs/index.html` 열기 |
+| 날씨/항공권 로직 | 서버(백엔드)에서 처리 | 100% 브라우저에서 처리 |
+| 배포 | 서버 호스팅 필요 | **GitHub Pages(`*.github.io`)로 무료 배포 가능** |
+
+### 1) 로컬에서 Node 서버로 실행
 
 ```bash
 # 의존성 설치 불필요 — 순수 Node.js로 동작합니다
-node server.js
-
-# 또는
-npm start
+node server.js        # 또는 npm start
 ```
 
-브라우저에서 <http://localhost:3000> 접속.
+브라우저에서 <http://localhost:3000> 접속. (포트 변경: `PORT=8080 node server.js`)
 
-포트 변경: `PORT=8080 node server.js`
+### 2) GitHub Pages로 배포하기 (백엔드 불필요)
+
+`docs/` 폴더가 백엔드 없이 브라우저에서 모든 로직을 실행하는 정적 사이트입니다.
+(날씨·지오코딩은 CORS를 허용하는 Open-Meteo를 브라우저에서 직접 호출)
+
+**방법 A — GitHub Actions 자동 배포 (권장)**
+`.github/workflows/pages.yml`가 포함돼 있습니다. `main` 브랜치에 병합되면 자동으로
+`docs/`가 Pages에 배포됩니다. 저장소 **Settings → Pages → Source**를 **"GitHub Actions"**로
+한 번만 설정하면 됩니다. (워크플로가 자동 활성화를 시도하지만, 조직 정책에 따라 수동 설정이 필요할 수 있음)
+
+**방법 B — 브랜치에서 바로 배포**
+Settings → Pages → Source를 **"Deploy from a branch"**, 브랜치 `main`, 폴더 `/docs`로 지정.
+
+배포 후 주소: `https://<사용자명>.github.io/weatherlike/`
+
+로컬에서 정적 버전을 미리 보려면 `docs/`를 아무 정적 서버로 열면 됩니다:
+```bash
+cd docs && python3 -m http.server 8000   # http://localhost:8000
+```
 
 ## 프로젝트 구조
 
