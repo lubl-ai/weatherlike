@@ -1,0 +1,43 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  # main 브랜치에 docs/ 변경이 푸시되면 배포
+  push:
+    branches: [main]
+  # Actions 탭에서 수동 실행도 가능
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 동시 배포 방지 (진행 중인 배포는 취소하지 않고 큐잉)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          # 저장소에 Pages가 아직 활성화돼 있지 않으면 자동 활성화 시도
+          enablement: true
+
+      - name: Upload static site (docs/)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
