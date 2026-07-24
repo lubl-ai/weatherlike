@@ -1,0 +1,22 @@
+{
+  "name": "weatherlike",
+  "version": "1.0.0",
+  "description": "내 정보를 입력하면 어울리는 여행지 · 현재 날씨 · 예상 항공권 가격을 추천해주는 웹서비스",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "travel",
+    "recommendation",
+    "weather",
+    "flights"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
